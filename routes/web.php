@@ -22,3 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//Test URL to test ML code
+Route::get('/test_ml', 'phpML@index');
