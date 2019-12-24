@@ -25,3 +25,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //Test URL to test ML code
 Route::get('/test_ml', 'phpML@index');
+
+//Sentiment Combo Chart view
+Route::get('/test_ml/report', 'reportController@index');

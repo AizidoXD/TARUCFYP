@@ -26,7 +26,7 @@ class phpML extends Controller {
         // extract data from csv file and put into arr_text and arr_label
         //$filePath = public_path('/Excel/')."Bus.csv";
         if (($csvFile = fopen("Excel/Bus.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($csvFile, 1000, ",")) !== FALSE) {
+            while (($data = fgetcsv($csvFile, 500, ",")) !== FALSE) {
                 array_push($this->arr_text, strtolower($data[0]));
                 array_push($this->arr_label, $data[1]);
             }
@@ -57,7 +57,7 @@ class phpML extends Controller {
         $classifier->train($arr_transform, $this->arr_label);
 
         // initialize test set 
-        $arr_testset = [
+        $arr_testset = [ 
             'Great driver',
             'worst driver',
             'The driver professional',
@@ -77,6 +77,8 @@ class phpML extends Controller {
         foreach ($result as $value) {
             echo $value . '</br>';
         }
+        
+        dd(array_count_values($result));
     }
 
 }
