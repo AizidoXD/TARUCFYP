@@ -24,15 +24,14 @@ class phpML extends Controller {
 
     public function index() {
         // extract data from csv file and put into arr_text and arr_label
-        //$filePath = public_path('/Excel/')."Bus.csv";
-        if (($csvFile = fopen("Excel/Bus.csv", "r")) !== FALSE) {
+        if (($csvFile = fopen("Excel/Train/Bus.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($csvFile, 500, ",")) !== FALSE) {
                 array_push($this->arr_text, strtolower($data[0]));
                 array_push($this->arr_label, $data[1]);
             }
             fclose($csvFile);
         }
-        
+
         // tokenize the sentence
         $tokenize = new WordTokenizer();
         $vectorizer = new TokenCountVectorizer($tokenize);
@@ -57,7 +56,7 @@ class phpML extends Controller {
         $classifier->train($arr_transform, $this->arr_label);
 
         // initialize test set 
-        $arr_testset = [ 
+        $arr_testset = [
             'Great driver',
             'worst driver',
             'The driver professional',
@@ -70,15 +69,34 @@ class phpML extends Controller {
         $transformer->transform($arr_testset);
         $result = $classifier->predict($arr_testset);
 
-//        foreach ($arr_testset as $a) {
-//            echo $a . '</br>';
-//        }
+        //Count the total good and bad result for each category
+//        $arr_category = [];
+//        $arr_total = [];
+        $arr_bus = [0, 0, 1];
+        $arr_count = array_count_values($result);
 
-        foreach ($result as $value) {
-            echo $value . '</br>';
+        foreach ($arr_count as $key => $value) {
+//            array_push($arr_category, $key);
+//            array_push($arr_total, $value);
+            if ($key === "BusG") {
+                $arr_bus[0] = $value;
+            }
+            if ($key === "BusB") {
+                $arr_bus[1] = $value;
+            }
         }
         
-        dd(array_count_values($result));
+        return view('test')->with('arr_bus', $arr_bus);
+
+//        print_r($arr_category);
+//        print_r($arr_total);
+//        foreach ($arr_category as $value) {
+//            echo $arr_category . "</br>";
+//        }
+//        
+//        foreach ($arr_total as $value2){
+//            echo $arr_total . "</br>";
+//        }
     }
 
 }
