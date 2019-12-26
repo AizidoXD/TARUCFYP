@@ -68,7 +68,7 @@ class phpML extends Controller {
             'Food just not good',
             'It is easy to parking',
             'I love my timetable',
-            'The timetable has spoil my plan'
+            'The timetable has spoil my plan',
         ];
 
         $vectorizer->transform($arr_testset);
@@ -85,6 +85,8 @@ class phpML extends Controller {
         $arr_lecturer = [0,0,0];
         $arr_outdoor = [0,0,0];
         $arr_facility = [0,0,0];
+        $categoryBad = [];
+        
         $arr_count = array_count_values($result);
 
         foreach ($arr_count as $key => $value) {
@@ -93,18 +95,21 @@ class phpML extends Controller {
             }
             if ($key === "BusB") {
                 $arr_bus[1] = $value;
+                $categoryBad["Bus"] = $value;
             }
             if ($key === "WifiG") {
                 $arr_wifi[0] = $value;
             }
             if ($key === "WifiB") {
                 $arr_wifi[1] = $value;
+                $categoryBad['Wifi'] = $arr_wifi[1];
             }
             if ($key === "AdminG") {
                 $arr_adminService[0] = $value;
             }
             if ($key === "AdminB") {
                 $arr_adminService[1] = $value;
+                $categoryBad['AdminService'] = $arr_adminService[1];
             }
             
             if ($key === "FoodG") {
@@ -112,18 +117,21 @@ class phpML extends Controller {
             }
             if ($key === "FoodB") {
                 $arr_food[1] = $value;
+                $categoryBad['Food'] = $arr_food[1];
             }
             if ($key === "ParkingG") {
                 $arr_parking[0] = $value;
             }
             if ($key === "ParkingB") {
                 $arr_parking[1] = $value;
+                $categoryBad['Parking'] = $arr_parking[1];
             }
             if ($key === "TimetableG") {
                 $arr_timeTable[0] = $value;
             }
             if ($key === "TimetableB") {
                 $arr_timeTable[1] = $value;
+                $categoryBad['TimeTable'] = $arr_timeTable[1];
             }
             
             if ($key === "LecturerG") {
@@ -131,21 +139,25 @@ class phpML extends Controller {
             }
             if ($key === "LecturerB") {
                 $arr_lecturer[1] = $value;
+                $categoryBad['Lecturer'] = $arr_lecturer[1];
             }
             if ($key === "OutdoorG") {
                 $arr_outdoor[0] = $value;
             }
             if ($key === "OutdoorB") {
                 $arr_outdoor[1] = $value;
+                $categoryBad['Outdoor'] = $arr_outdoor[1];
             }
             if ($key === "FacilityG") {
                 $arr_facility[0] = $value;
             }
             if ($key === "FacilityB") {
                 $arr_facility[1] = $value;
+                $categoryBad['Facility'] = $arr_facility[1];
             }
         }
-        
+        arsort($categoryBad);
+
         return view('test')
                 ->with('arr_bus', $arr_bus)
                 ->with('arr_wifi', $arr_wifi)
@@ -155,6 +167,7 @@ class phpML extends Controller {
                 ->with('arr_timeTable', $arr_timeTable)
                 ->with('arr_lecturer', $arr_lecturer)
                 ->with('arr_outdoor', $arr_outdoor)
-                ->with('arr_facility', $arr_facility);
+                ->with('arr_facility', $arr_facility)
+                ->with('categoryBad', $categoryBad);
     }
 }
