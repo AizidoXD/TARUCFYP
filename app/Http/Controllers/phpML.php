@@ -24,7 +24,7 @@ class phpML extends Controller {
 
     public function index() {
         // extract data from csv file and put into arr_text and arr_label
-        if (($csvFile = fopen("Excel/Train/Bus.csv", "r")) !== FALSE) {
+        if (($csvFile = fopen("Excel/Train/Training.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($csvFile, 500, ",")) !== FALSE) {
                 array_push($this->arr_text, strtolower($data[0]));
                 array_push($this->arr_label, $data[1]);
@@ -62,7 +62,13 @@ class phpML extends Controller {
             'The driver professional',
             'dirty bus',
             'The bus is professional',
-            'I woul highly recomend this bus'
+            'I woul highly recomend this bus',
+            'Food is good.',
+            'Food are great.',
+            'Food just not good',
+            'It is easy to parking',
+            'I love my timetable',
+            'The timetable has spoil my plan'
         ];
 
         $vectorizer->transform($arr_testset);
@@ -70,33 +76,85 @@ class phpML extends Controller {
         $result = $classifier->predict($arr_testset);
 
         //Count the total good and bad result for each category
-//        $arr_category = [];
-//        $arr_total = [];
         $arr_bus = [0, 0, 1];
+        $arr_wifi = [0,0,0];
+        $arr_adminService = [0,0,0];
+        $arr_food = [0, 0, 1];
+        $arr_parking = [0, 0, 1];
+        $arr_timeTable = [0, 0, 1];
+        $arr_lecturer = [0,0,0];
+        $arr_outdoor = [0,0,0];
+        $arr_facility = [0,0,0];
         $arr_count = array_count_values($result);
 
         foreach ($arr_count as $key => $value) {
-//            array_push($arr_category, $key);
-//            array_push($arr_total, $value);
             if ($key === "BusG") {
                 $arr_bus[0] = $value;
             }
             if ($key === "BusB") {
                 $arr_bus[1] = $value;
             }
+            if ($key === "WifiG") {
+                $arr_wifi[0] = $value;
+            }
+            if ($key === "WifiB") {
+                $arr_wifi[1] = $value;
+            }
+            if ($key === "AdminG") {
+                $arr_adminService[0] = $value;
+            }
+            if ($key === "AdminB") {
+                $arr_adminService[1] = $value;
+            }
+            
+            if ($key === "FoodG") {
+                $arr_food[0] = $value;
+            }
+            if ($key === "FoodB") {
+                $arr_food[1] = $value;
+            }
+            if ($key === "ParkingG") {
+                $arr_parking[0] = $value;
+            }
+            if ($key === "ParkingB") {
+                $arr_parking[1] = $value;
+            }
+            if ($key === "TimetableG") {
+                $arr_timeTable[0] = $value;
+            }
+            if ($key === "TimetableB") {
+                $arr_timeTable[1] = $value;
+            }
+            
+            if ($key === "LecturerG") {
+                $arr_lecturer[0] = $value;
+            }
+            if ($key === "LecturerB") {
+                $arr_lecturer[1] = $value;
+            }
+            if ($key === "OutdoorG") {
+                $arr_outdoor[0] = $value;
+            }
+            if ($key === "OutdoorB") {
+                $arr_outdoor[1] = $value;
+            }
+            if ($key === "FacilityG") {
+                $arr_facility[0] = $value;
+            }
+            if ($key === "FacilityB") {
+                $arr_facility[1] = $value;
+            }
         }
         
-        return view('test')->with('arr_bus', $arr_bus);
-
-//        print_r($arr_category);
-//        print_r($arr_total);
-//        foreach ($arr_category as $value) {
-//            echo $arr_category . "</br>";
-//        }
-//        
-//        foreach ($arr_total as $value2){
-//            echo $arr_total . "</br>";
-//        }
+        return view('test')
+                ->with('arr_bus', $arr_bus)
+                ->with('arr_wifi', $arr_wifi)
+                ->with('arr_adminService', $arr_adminService)
+                ->with('arr_food', $arr_food)
+                ->with('arr_parking', $arr_parking)
+                ->with('arr_timeTable', $arr_timeTable)
+                ->with('arr_lecturer', $arr_lecturer)
+                ->with('arr_outdoor', $arr_outdoor)
+                ->with('arr_facility', $arr_facility);
     }
-
 }
