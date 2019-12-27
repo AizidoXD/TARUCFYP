@@ -26,5 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Test URL to test ML code
 Route::get('/test_ml', 'phpML@index');
 
-//Sentiment Combo Chart view
-Route::get('/test_ml/report', 'reportController@index');
+//Upload Excel Route
+Route::get('/upload_excel', 'ExcelController@index'); //Return the uploadExcel view
+Route::post('/import_excel', 'ExcelController@importExcel'); //Post method to upload the excel file
+

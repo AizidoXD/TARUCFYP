@@ -16,20 +16,17 @@ use Illuminate\Http\Request;
 class phpML extends Controller {
 
     //initialize 2 array for training ( text and label ) 
-    //private $arr_text = ["Bus is old, bumpy.", "We couldn't find a place to sit.", "The bus is bad.", "Clean bus. Great driver.", "Excellent driver!", "Driver was professional and on time ! Would use them again.", "The bus driver is professional"];
-    //private $arr_label = ["BusB", "BusB", "BusB", "BusG", "BusG", "BusG", "BusG"];
-
     private $arr_text = [];
     private $arr_label = [];
 
     public function index() {
         // extract data from csv file and put into arr_text and arr_label
-        if (($csvFile = fopen("Excel/Train/Training.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($csvFile, 500, ",")) !== FALSE) {
+        if (($csvTrain = fopen("Excel/Train/Training.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($csvTrain, 500, ",")) !== FALSE) {
                 array_push($this->arr_text, strtolower($data[0]));
                 array_push($this->arr_label, $data[1]);
             }
-            fclose($csvFile);
+            fclose($csvTrain);
         }
 
         // tokenize the sentence
@@ -55,21 +52,16 @@ class phpML extends Controller {
         $classifier = new NaiveBayes();
         $classifier->train($arr_transform, $this->arr_label);
 
-        // initialize test set 
-        $arr_testset = [
-            'Great driver',
-            'worst driver',
-            'The driver professional',
-            'dirty bus',
-            'The bus is professional',
-            'I woul highly recomend this bus',
-            'Food is good.',
-            'Food are great.',
-            'Food just not good',
-            'It is easy to parking',
-            'I love my timetable',
-            'The timetable has spoil my plan',
-        ];
+        //initialize test set 
+        $arr_testset= [];
+        
+        // extract data from csv file and put into $arr_testset
+        if (($csvTest = fopen("Excel/Test/Book1.csv", "r")) !== FALSE) {
+            while (($data = fgetcsv($csvTest, 500, ",")) !== FALSE) {
+                array_push($arr_testset, strtolower($data[0]));
+            }
+            fclose($csvTest);
+        }
 
         $vectorizer->transform($arr_testset);
         $transformer->transform($arr_testset);
@@ -77,18 +69,20 @@ class phpML extends Controller {
 
         //Count the total good and bad result for each category
         $arr_bus = [0, 0, 1];
-        $arr_wifi = [0,0,0];
-        $arr_adminService = [0,0,0];
+        $arr_wifi = [0, 0, 0];
+        $arr_adminService = [0, 0, 0];
         $arr_food = [0, 0, 1];
         $arr_parking = [0, 0, 1];
         $arr_timeTable = [0, 0, 1];
-        $arr_lecturer = [0,0,0];
-        $arr_outdoor = [0,0,0];
-        $arr_facility = [0,0,0];
+        $arr_lecturer = [0, 0, 0];
+        $arr_outdoor = [0, 0, 0];
+        $arr_facility = [0, 0, 0];
         $categoryBad = [];
-        
+
+        //Count the duplicated array value
         $arr_count = array_count_values($result);
 
+        //Fill up the category array with the bad and good comment number
         foreach ($arr_count as $key => $value) {
             if ($key === "BusG") {
                 $arr_bus[0] = $value;
@@ -111,7 +105,7 @@ class phpML extends Controller {
                 $arr_adminService[1] = $value;
                 $categoryBad['AdminService'] = $arr_adminService[1];
             }
-            
+
             if ($key === "FoodG") {
                 $arr_food[0] = $value;
             }
@@ -133,7 +127,7 @@ class phpML extends Controller {
                 $arr_timeTable[1] = $value;
                 $categoryBad['TimeTable'] = $arr_timeTable[1];
             }
-            
+
             if ($key === "LecturerG") {
                 $arr_lecturer[0] = $value;
             }
@@ -156,18 +150,22 @@ class phpML extends Controller {
                 $categoryBad['Facility'] = $arr_facility[1];
             }
         }
+
+        //sort the $categoryBad with the custom key value by descending order of the array value
         arsort($categoryBad);
 
+        //Passing the array to test.blade view
         return view('test')
-                ->with('arr_bus', $arr_bus)
-                ->with('arr_wifi', $arr_wifi)
-                ->with('arr_adminService', $arr_adminService)
-                ->with('arr_food', $arr_food)
-                ->with('arr_parking', $arr_parking)
-                ->with('arr_timeTable', $arr_timeTable)
-                ->with('arr_lecturer', $arr_lecturer)
-                ->with('arr_outdoor', $arr_outdoor)
-                ->with('arr_facility', $arr_facility)
-                ->with('categoryBad', $categoryBad);
+                        ->with('arr_bus', $arr_bus)
+                        ->with('arr_wifi', $arr_wifi)
+                        ->with('arr_adminService', $arr_adminService)
+                        ->with('arr_food', $arr_food)
+                        ->with('arr_parking', $arr_parking)
+                        ->with('arr_timeTable', $arr_timeTable)
+                        ->with('arr_lecturer', $arr_lecturer)
+                        ->with('arr_outdoor', $arr_outdoor)
+                        ->with('arr_facility', $arr_facility)
+                        ->with('categoryBad', $categoryBad);
     }
+
 }
