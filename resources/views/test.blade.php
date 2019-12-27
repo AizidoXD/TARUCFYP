@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<?php $result = ""; ?>
-<div id="chart_div" style="width: 80%; height: 630px; float: left; overflow: auto;">
+<?php $result = []; ?>
+<div id="chart_div" style="width: 80%; height: 642px; float: left; overflow: auto;">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
@@ -13,39 +13,39 @@
         ['Category', 'Good', 'Bad'],
                 @if ($arr_bus[2] > 0)
         ['Bus', {{$arr_bus[0]}}, {{$arr_bus[1]}}],
-<?php $result = $result . "Bus," . $arr_bus[0] . "," . $arr_bus[1] . "|" ?>
+<?php array_push($result, "Bus," . $arr_bus[0] . "," . $arr_bus[1]);?>
         @endif
                 @if ($arr_wifi[2] > 0)
         ['Wifi', {{$arr_wifi[0]}}, {{$arr_wifi[1]}}],
-<?php $result = $result . "Wifi," . $arr_wifi[0] . "," . $arr_wifi[1] . "|" ?>
+<?php array_push($result, "Wifi," . $arr_wifi[0] . "," . $arr_wifi[1]) ?>
         @endif
                 @if ($arr_adminService[2] > 0)
         ['Admin Services', {{$arr_adminService[0]}}, {{$arr_adminService[1]}}],
-<?php $result = $result . "Admin Services," . $arr_adminService[0] . "," . $arr_adminService[1] . "|" ?>
+<?php array_push($result, "Admin Services," . $arr_adminService[0] . "," . $arr_adminService[1]) ?>
         @endif
                 @if ($arr_food[2] > 0)
         ['Food', {{$arr_food[0]}}, {{$arr_food[1]}}],
-<?php $result = $result . "Food," . $arr_food[0] . "," . $arr_food[1] . "|" ?>
+<?php array_push($result, "Food," . $arr_food[0] . "," . $arr_food[1]) ?>
         @endif
                 @if ($arr_parking[2] > 0)
         ['Parking', {{$arr_parking[0]}}, {{$arr_parking[1]}}],
-<?php $result = $result . "Parking," . $arr_parking[0] . "," . $arr_parking[1] . "|" ?>
+<?php array_push($result, "Parking," . $arr_parking[0] . "," . $arr_parking[1]) ?>
         @endif
                 @if ($arr_timeTable[2] > 0)
         ['Time Table', {{$arr_timeTable[0]}}, {{$arr_timeTable[1]}}],
-<?php $result = $result . "Time Table," . $arr_timeTable[0] . "," . $arr_timeTable[1] . "|" ?>
+<?php array_push($result, "Time Table," . $arr_timeTable[0] . "," . $arr_timeTable[1]) ?>
         @endif
                 @if ($arr_lecturer[2] > 0)
         ['Lecturer', {{$arr_lecturer[0]}}, {{$arr_lecturer[1]}}],
-<?php $result = $result . "Lecturer," . $arr_lecturer[0] . "," . $arr_lecturer[1] . "|" ?>
+<?php array_push($result, "Lecturer," . $arr_lecturer[0] . "," . $arr_lecturer[1]) ?>
         @endif
                 @if ($arr_outdoor[2] > 0)
         ['Outdoor', {{$arr_outdoor[0]}}, {{$arr_outdoor[1]}}],
-<?php $result = $result . "Outdoor," . $arr_outdoor[0] . "," . $arr_outdoor[1] . "|" ?>
+<?php array_push($result, "Outdoor," . $arr_outdoor[0] . "," . $arr_outdoor[1]) ?>
         @endif
                 @if ($arr_facility[2] > 0)
         ['Facility', {{$arr_facility[0]}}, {{$arr_facility[1]}}],
-<?php $result = $result . "Facility," . $arr_facility[0] . "," . $arr_facility[1] . "|" ?>
+<?php array_push($result, "Facility," . $arr_facility[0] . "," . $arr_facility[1]) ?>
         @endif
         ]);
         var options = {
@@ -59,10 +59,10 @@
         var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
         chart.draw(data, options);
         }
-    </script>
+    </script>    
 </div>
-
-<div style="width: 20%; height: 600px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto;">
+<p style="color: blue">Analysis sources : {{$fileName}}</p>
+<div style="width: 20%; height: 564px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto;">
     <?php $i = 1; ?>
     <h3 align="center" style="color: white">Issue Ranking</h3>    
     <table class="table-dark" style="width:100%;">
@@ -86,8 +86,13 @@
         @endforeach
     </table>        
 </div>
-<form method="post" action="">
-    <input type="text" id="result" name="result" value="{{$result}}" style="display: none"/>
+<form action="{{ route('result.save') }}" method="post">
+    <?php $size = count($result);?>
+    @foreach($result as $key => $value)
+    <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}" style="display: none"/>
+    @endforeach
+    <input type="text" id="size" name="size" value="{{$size}}" style="display: none"/>
     <input type="submit" name="submit" value="Save to Database ?" style="position: absolute; right: 0; bottom: 0; width: 20%; height: 40px;">
+    {{csrf_field()}}
 </form>
 @endsection

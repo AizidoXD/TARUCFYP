@@ -53,10 +53,10 @@ class phpML extends Controller {
         $classifier->train($arr_transform, $this->arr_label);
 
         //initialize test set 
-        $arr_testset= [];
-        
+        $arr_testset = [];
+        $filename = "Book1.csv";
         // extract data from csv file and put into $arr_testset
-        if (($csvTest = fopen("Excel/Test/Book1.csv", "r")) !== FALSE) {
+        if (($csvTest = fopen("Excel/Test/$filename", "r")) !== FALSE) {
             while (($data = fgetcsv($csvTest, 500, ",")) !== FALSE) {
                 array_push($arr_testset, strtolower($data[0]));
             }
@@ -165,7 +165,8 @@ class phpML extends Controller {
                         ->with('arr_lecturer', $arr_lecturer)
                         ->with('arr_outdoor', $arr_outdoor)
                         ->with('arr_facility', $arr_facility)
-                        ->with('categoryBad', $categoryBad);
+                        ->with('categoryBad', $categoryBad)
+                        ->with('fileName', $filename);
     }
 
 }
