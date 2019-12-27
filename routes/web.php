@@ -24,6 +24,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Test URL to test ML code
+Route::post('/sentiment_analysis', 'phpML@index')->name('analyzing');
 Route::get('/test_ml', 'phpML@index');
 
 //Upload Excel Route

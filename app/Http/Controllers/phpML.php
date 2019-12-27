@@ -19,7 +19,7 @@ class phpML extends Controller {
     private $arr_text = [];
     private $arr_label = [];
 
-    public function index() {
+    public function index(Request $request) {
         // extract data from csv file and put into arr_text and arr_label
         if (($csvTrain = fopen("Excel/Train/Training.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($csvTrain, 500, ",")) !== FALSE) {
@@ -54,7 +54,7 @@ class phpML extends Controller {
 
         //initialize test set 
         $arr_testset = [];
-        $filename = "Book1.csv";
+        $filename = $request->input('csvName');
         // extract data from csv file and put into $arr_testset
         if (($csvTest = fopen("Excel/Test/$filename", "r")) !== FALSE) {
             while (($data = fgetcsv($csvTest, 500, ",")) !== FALSE) {
@@ -68,17 +68,37 @@ class phpML extends Controller {
         $result = $classifier->predict($arr_testset);
 
         //Count the total good and bad result for each category
-        $arr_bus = [0, 0, 1];
+        $arr_bus = [0, 0, 0];
         $arr_wifi = [0, 0, 0];
         $arr_adminService = [0, 0, 0];
-        $arr_food = [0, 0, 1];
-        $arr_parking = [0, 0, 1];
-        $arr_timeTable = [0, 0, 1];
+        $arr_food = [0, 0, 0];
+        $arr_parking = [0, 0, 0];
+        $arr_timeTable = [0, 0, 0];
         $arr_lecturer = [0, 0, 0];
         $arr_outdoor = [0, 0, 0];
         $arr_facility = [0, 0, 0];
         $categoryBad = [];
 
+        //Turnning on the switch
+        if (!empty($request->input('Bus')))
+            $arr_bus[2] = 1;
+        if (!empty($request->input('Wifi')))
+            $arr_wifi[2] = 1;
+        if (!empty($request->input('AdminService')))
+            $arr_adminService[2] = 1;
+        if (!empty($request->input('Food')))
+            $arr_food[2] = 1;
+        if (!empty($request->input('Parking')))
+            $arr_parking[2] = 1;
+        if (!empty($request->input('TimeTable')))
+            $arr_timeTable[2] = 1;
+        if (!empty($request->input('Lecturer')))
+            $arr_lecturer[2] = 1;
+        if (!empty($request->input('Outdoor')))
+            $arr_outdoor[2] = 1;
+        if (!empty($request->input('Facility')))
+            $arr_facility[2] = 1;
+        
         //Count the duplicated array value
         $arr_count = array_count_values($result);
 
@@ -87,21 +107,21 @@ class phpML extends Controller {
             if ($key === "BusG") {
                 $arr_bus[0] = $value;
             }
-            if ($key === "BusB") {
+            if ($key === "BusB" && $arr_bus[2] === 1) {
                 $arr_bus[1] = $value;
                 $categoryBad["Bus"] = $value;
             }
             if ($key === "WifiG") {
                 $arr_wifi[0] = $value;
             }
-            if ($key === "WifiB") {
+            if ($key === "WifiB" && $arr_wifi[2] === 1) {
                 $arr_wifi[1] = $value;
                 $categoryBad['Wifi'] = $arr_wifi[1];
             }
             if ($key === "AdminG") {
                 $arr_adminService[0] = $value;
             }
-            if ($key === "AdminB") {
+            if ($key === "AdminB" && $arr_adminService[2] === 1) {
                 $arr_adminService[1] = $value;
                 $categoryBad['AdminService'] = $arr_adminService[1];
             }
@@ -109,21 +129,21 @@ class phpML extends Controller {
             if ($key === "FoodG") {
                 $arr_food[0] = $value;
             }
-            if ($key === "FoodB") {
+            if ($key === "FoodB" && $arr_food[2] === 1) {
                 $arr_food[1] = $value;
                 $categoryBad['Food'] = $arr_food[1];
             }
             if ($key === "ParkingG") {
                 $arr_parking[0] = $value;
             }
-            if ($key === "ParkingB") {
+            if ($key === "ParkingB" && $arr_parking[2] === 1) {
                 $arr_parking[1] = $value;
                 $categoryBad['Parking'] = $arr_parking[1];
             }
             if ($key === "TimetableG") {
                 $arr_timeTable[0] = $value;
             }
-            if ($key === "TimetableB") {
+            if ($key === "TimetableB" && $arr_timeTable[2] === 1) {
                 $arr_timeTable[1] = $value;
                 $categoryBad['TimeTable'] = $arr_timeTable[1];
             }
@@ -131,21 +151,21 @@ class phpML extends Controller {
             if ($key === "LecturerG") {
                 $arr_lecturer[0] = $value;
             }
-            if ($key === "LecturerB") {
+            if ($key === "LecturerB" && $arr_lecturer[2] === 1) {
                 $arr_lecturer[1] = $value;
                 $categoryBad['Lecturer'] = $arr_lecturer[1];
             }
             if ($key === "OutdoorG") {
                 $arr_outdoor[0] = $value;
             }
-            if ($key === "OutdoorB") {
+            if ($key === "OutdoorB" && $arr_outdoor[2] === 1) {
                 $arr_outdoor[1] = $value;
                 $categoryBad['Outdoor'] = $arr_outdoor[1];
             }
             if ($key === "FacilityG") {
                 $arr_facility[0] = $value;
             }
-            if ($key === "FacilityB") {
+            if ($key === "FacilityB" && $arr_facility[2] === 1) {
                 $arr_facility[1] = $value;
                 $categoryBad['Facility'] = $arr_facility[1];
             }
