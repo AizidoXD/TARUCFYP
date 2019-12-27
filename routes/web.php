@@ -29,4 +29,3 @@ Route::get('/test_ml', 'phpML@index');
 //Upload Excel Route
 Route::get('/upload_excel', 'ExcelController@index'); //Return the uploadExcel view
 Route::post('/import_excel', 'ExcelController@importExcel'); //Post method to upload the excel file
-
