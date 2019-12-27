@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <a href="{{ url('upload_excel') }}">Import Excel File.</a></br>
+                    <a href="{{ url('test_ml') }}">Run Analysis</a> This should show the list of csv file
                 </div>
             </div>
         </div>

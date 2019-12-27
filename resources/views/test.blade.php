@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="chart_div" style="width: 80%; height: 630px; float: left">
+<div id="chart_div" style="width: 80%; height: 630px; float: left; overflow: auto;">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
@@ -52,7 +52,7 @@
     </script>
 </div>
 
-<div style="width: 20%; height: 600px; border: 1px black solid; float: right; background-color: #343a40">
+<div style="width: 20%; height: 600px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto;">
     <?php $i = 1; ?>
     <h3 align="center" style="color: white">Issue Ranking</h3>    
     <table class="table-dark" style="width:100%;">
@@ -63,7 +63,9 @@
             <th>Percentage</th>
         </tr>
         @foreach ($categoryBad as $key => $value)
-        <?php $percent = $value / array_sum($categoryBad) * 100; ?>
+        <?php 
+            $percent = number_format((float)$value / array_sum($categoryBad) * 100, 2, '.', '');
+        ?>
         <tr>
             <td style="padding: 8px;">{{$i}}.</td>
             <td style="padding: 8px;">{{$key}}</td>
