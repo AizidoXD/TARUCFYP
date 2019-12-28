@@ -32,4 +32,5 @@ Route::get('/upload_excel', 'ExcelController@index'); //Return the uploadExcel v
 Route::post('/import_excel', 'ExcelController@importExcel'); //Post method to upload the excel file
 
 //Post to dcController
-Route::post('/save_resut', 'dbController@index')->name('result.save');
+Route::post('/saveRecod', 'dbController@index')->name('result.save');
+Route::get('/retrieveHistory', 'dbController@retrieveDB'); //use this to show the chart from db okok
