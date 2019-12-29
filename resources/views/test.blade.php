@@ -33,7 +33,7 @@
         @endif
                 @if ($arr_timeTable[2] > 0)
         ['Time Table', {{$arr_timeTable[0]}}, {{$arr_timeTable[1]}}],
-<?php array_push($result, "Time Table," . $arr_timeTable[0] . "," . $arr_timeTable[1]) ?>
+<?php array_push($result, "TimeTable," . $arr_timeTable[0] . "," . $arr_timeTable[1]) ?>
         @endif
                 @if ($arr_lecturer[2] > 0)
         ['Lecturer', {{$arr_lecturer[0]}}, {{$arr_lecturer[1]}}],

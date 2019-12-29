@@ -63,6 +63,37 @@
                     </div>
                 </form>
             </div>
+
+            <br>
+
+            <div class="card">
+                <?php
+                    use App\file;
+                    $files = file::all()->toArray(); //wait aj
+                ?>
+                <form action="{{route('analyzing')}}" method="post">
+                    <div class="card-header">History File</div>
+                    <div class="card-body">
+                        <table style="width: 100%">
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>File Name</th>
+                                <th></th>
+                            </tr>
+                            @foreach($files as $row)
+                            <tr>
+                                <td>{{$row['id']}}</td>
+                                <td>{{$row['date']}}</td>
+                                <td>{{$row['name']}}</td>
+                                
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>
