@@ -31,6 +31,6 @@ Route::get('/test_ml', 'phpML@index');
 Route::get('/upload_excel', 'ExcelController@index'); //Return the uploadExcel view
 Route::post('/import_excel', 'ExcelController@importExcel'); //Post method to upload the excel file
 
-//Post to dcController
+//Post to dbController
 Route::post('/saveRecod', 'dbController@index')->name('result.save');
-Route::get('/retrieveHistory', 'dbController@retrieveDB'); //use this to show the chart from db okok
+Route::get('/retrieveHistory/{filePK}', 'dbController@retrieveDB')->name('viewHistory');
