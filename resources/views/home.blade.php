@@ -68,10 +68,12 @@
 
             <div class="card">
                 <?php
-                    use App\file;
-                    $files = file::all()->toArray(); //wait aj
+
+                use App\file;
+
+                    $files = file::all()->toArray();
                 ?>
-                <form action="{{route('analyzing')}}" method="post">
+                <form action="{{url('retrieveHistory')}}" method="post">
                     <div class="card-header">History File</div>
                     <div class="card-body">
                         <table style="width: 100%">
@@ -79,6 +81,7 @@
                                 <th>ID</th>
                                 <th>Date</th>
                                 <th>File Name</th>
+                                <th>View Record</th>
                                 <th></th>
                             </tr>
                             @foreach($files as $row)
@@ -86,10 +89,15 @@
                                 <td>{{$row['id']}}</td>
                                 <td>{{$row['date']}}</td>
                                 <td>{{$row['name']}}</td>
-                                
+                                <?php
+                                    $filePK = $row['id'];
+                                ?>
+                                <td><button><a href="{{url('retrieveHistory',$filePK)}}"</a>View</button></td>
                             </tr>
                             @endforeach
                         </table>
+                        {{csrf_field()}}
+
                     </div>
                 </form>
             </div>
