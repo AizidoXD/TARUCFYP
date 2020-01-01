@@ -16,14 +16,6 @@
         ['Bus', {{$arr_bus[0]}}, {{$arr_bus[1]}}],
 <?php array_push($result, "Bus," . $arr_bus[0] . "," . $arr_bus[1]); ?>
         @endif
-                @if ($arr_wifi[2] > 0)
-        ['Wifi', {{$arr_wifi[0]}}, {{$arr_wifi[1]}}],
-<?php array_push($result, "Wifi," . $arr_wifi[0] . "," . $arr_wifi[1]) ?>
-        @endif
-                @if ($arr_adminService[2] > 0)
-        ['Admin Services', {{$arr_adminService[0]}}, {{$arr_adminService[1]}}],
-<?php array_push($result, "Admin Services," . $arr_adminService[0] . "," . $arr_adminService[1]) ?>
-        @endif
                 @if ($arr_food[2] > 0)
         ['Food', {{$arr_food[0]}}, {{$arr_food[1]}}],
 <?php array_push($result, "Food," . $arr_food[0] . "," . $arr_food[1]) ?>
@@ -62,9 +54,9 @@
         }
     </script>    
 </div>
-<p style="color: blue">Analysis sources : {{$fileName}}</p>
 
-<div style="width: 20%; height: 564px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto;">
+<div style="width: 20%; height: 564px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto; display: block">
+    <p style="color: yellow;">Analysis sources : {{$fileName}}</p>
     <?php $i = 1; ?>
     <h3 align="center" style="color: white">Issue Ranking</h3>    
     <table class="table-dark" style="width:100%;">
@@ -76,7 +68,11 @@
         </tr>
         @foreach ($categoryBad as $key => $value)
         <?php
-        $percent = number_format((float) $value / array_sum($categoryBad) * 100, 2, '.', '');
+        if ($value !== 0) {
+            $percent = number_format((float) $value / array_sum($categoryBad) * 100, 2, '.', '');
+        } else {
+            $percent = number_format(0, 2, '.', '');
+        }
         ?>
         <tr>
             <td style="padding: 8px;">{{$i}}.</td>
@@ -94,9 +90,9 @@
     <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}" style="display: none"/>
     @endforeach
     <input type="text" id="size" name="size" value="{{$size}}" style="display: none"/>
-    <input type="submit" name="submit" value="Save to Database ?" style="position: absolute; right: 0; bottom: 0; width: 20%; height: 40px;">
+    <input type="submit" name="submit" value="Save to Database ?" style="width: 20%; height: 40px;">
+    <a href="{{ url('home') }}" style="text-align: center">&nbsp;_____________Back Homepage_____________</a>
     {{csrf_field()}}
 </form>
-<p><button class="w3-button w3-dark-grey" style="position: absolute; right: 0; bottom: -42px; width: 20%; height: 40px;" onclick="history.go(-1);">Back Homepage </button></p>
 
 @endsection
