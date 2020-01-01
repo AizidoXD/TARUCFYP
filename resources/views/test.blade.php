@@ -55,10 +55,8 @@
     </script>    
 </div>
 
-
-<div style="width: 20%; height: 520px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto;">
-    <p style="color: blue; display: inline; border: 1px solid black">Analysis sources : {{$fileName}}</p>
-    
+<div style="width: 20%; height: 564px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto; display: block">
+    <p style="color: yellow;">Analysis sources : {{$fileName}}</p>
     <?php $i = 1; ?>
     <h3 align="center" style="color: white">Issue Ranking</h3>    
     <table class="table-dark" style="width:100%;">

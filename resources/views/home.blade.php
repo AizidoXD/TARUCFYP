@@ -40,6 +40,7 @@
                 <form action="{{route('analyzing')}}" method="post">
                     <div class="card-header">CSV File List</div>
                     <div class="card-body">
+                        <h2>Select a CSV file to run the sentiment analysis</h2>
                         <?php
                         $dir = public_path('/Excel/Test/');
                         $csvList = scandir($dir, 1);
