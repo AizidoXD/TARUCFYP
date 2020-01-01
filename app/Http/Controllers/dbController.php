@@ -76,8 +76,6 @@ class dbController extends Controller {
         $arr_ranking = [];
 
         $arr_bus = [0, 0, 0];
-        $arr_wifi = [0, 0, 0];
-        $arr_adminService = [0, 0, 0];
         $arr_food = [0, 0, 0];
         $arr_parking = [0, 0, 0];
         $arr_timeTable = [0, 0, 0];
@@ -91,18 +89,6 @@ class dbController extends Controller {
                 $arr_bus[0] = $row->good;
                 $arr_bus[1] = $row->bad;
                 $arr_bus[2] = 1;
-            }
-
-            if ($row->category === "Wifi") {
-                $arr_wifi[0] = $row->good;
-                $arr_wifi[1] = $row->bad;
-                $arr_wifi[2] = 1;
-            }
-            
-            if ($row->category === "Admin") {
-                $arr_adminService[0] = $row->good;
-                $arr_adminService[1] = $row->bad;
-                $arr_adminService[2] = 1;
             }
 
             if ($row->category === "Food") {
@@ -148,8 +134,6 @@ class dbController extends Controller {
 
         return view('viewHistory')
                         ->with('arr_bus', $arr_bus)
-                        ->with('arr_wifi', $arr_wifi)
-                        ->with('arr_adminService', $arr_adminService)
                         ->with('arr_food', $arr_food)
                         ->with('arr_parking', $arr_parking)
                         ->with('arr_timeTable', $arr_timeTable)

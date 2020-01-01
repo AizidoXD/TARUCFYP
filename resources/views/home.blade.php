@@ -5,9 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-
-                <div class="card-header">Dashboard</div>
-
+                <div class="card-header">Import Test Data CSV</div>
                 <div class="card-body">
                     @if (session('status'))
                     <div class="alert alert-success" role="alert">
@@ -15,8 +13,24 @@
                     </div>
                     @endif
 
-                    <a href="{{ url('upload_excel') }}">Import Excel File.</a></br>
-                    <a href="{{ url('test_ml') }}">Run Analysis</a> This should show the list of csv file
+                    <form method="POST" action="{{url('/import_excel')}}" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                        @if(session('errors'))
+                        <li style="color: red">{{session('errors')}}</li>
+                        @endif
+
+                        @if(session('success'))
+                        <span style="color: green">{{session('success')}}</span>
+                        @endif
+
+                        <h2>Select excel file to uploaded</h2>
+
+                        <input type="file" name="file" id="file" required>
+                        <br><br>
+
+                        <button type="submit">Upload</button>
+                        <br>
+                    </form>
                 </div>
             </div>
 
@@ -30,6 +44,9 @@
                         $dir = public_path('/Excel/Test/');
                         $csvList = scandir($dir, 1);
                         ?>
+                        @if(!empty($checkedBoxError))
+                        <span style="color: red">{{$checkedBoxError}}</span>
+                        @endif
                         <table style="width: 100%">
                             <tr>
                                 <th>File Name</th>
@@ -50,9 +67,7 @@
                             </tr>
                             @endfor
                         </table>
-                        <input type="checkbox" name="Bus" value="Bus" checked required>Bus &nbsp;
-                        <input type="checkbox" name="Wifi" value="Wifi">Wifi &nbsp;
-                        <input type="checkbox" name="AdminService" value="AdminService">AdminService &nbsp;
+                        <input type="checkbox" name="Bus" value="Bus">Bus &nbsp;
                         <input type="checkbox" name="Food" value="Food">Food &nbsp;
                         <input type="checkbox" name="Parking" value="Parking">Parking &nbsp;
                         <input type="checkbox" name="TimeTable" value="TimeTable">TimeTable &nbsp;
@@ -75,16 +90,12 @@
 $files = file::all()->toArray();
                 ?>
                 <form action="{{url('retrieveHistory')}}" method="post">
-
-
-
                     <div class="card-header">History Result</div>
                     <div class="card-body" style='overflow-y: auto;'>
                         @if(!empty($successMessage))
                         <span style="color: green">{{$successMessage}}</span>
                         @endif
                         <table style="width: 100%">
-
                             <tr>
                                 <th>ID</th>
                                 <th>Date</th>
@@ -105,11 +116,9 @@ $files = file::all()->toArray();
                             @endforeach
                         </table>
                         {{csrf_field()}}
-
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </div>
