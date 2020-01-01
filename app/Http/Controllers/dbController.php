@@ -48,6 +48,11 @@ class dbController extends Controller {
             $records->bad = $arr[2];
             $records->save();
         }
+        
+        $successMessage = "Record had save successfully in database.";
+        
+        return view('home')->with('successMessage', $successMessage);
+        
     }
 
     public function retrieveDB(Request $request) {
