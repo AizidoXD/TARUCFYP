@@ -5,6 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
@@ -71,12 +72,19 @@
 
                 use App\file;
 
-                    $files = file::all()->toArray();
+$files = file::all()->toArray();
                 ?>
                 <form action="{{url('retrieveHistory')}}" method="post">
-                    <div class="card-header">History File</div>
-                    <div class="card-body">
+
+
+
+                    <div class="card-header">History Result</div>
+                    <div class="card-body" style='overflow-y: auto;'>
+                        @if(!empty($successMessage))
+                        <span style="color: green">{{$successMessage}}</span>
+                        @endif
                         <table style="width: 100%">
+
                             <tr>
                                 <th>ID</th>
                                 <th>Date</th>
@@ -90,7 +98,7 @@
                                 <td>{{$row['date']}}</td>
                                 <td>{{$row['name']}}</td>
                                 <?php
-                                    $filePK = $row['id'];
+                                $filePK = $row['id'];
                                 ?>
                                 <td><button><a href="{{url('retrieveHistory',$filePK)}}"</a>View</button></td>
                             </tr>

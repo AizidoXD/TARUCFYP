@@ -2,6 +2,7 @@
 
 @section('content')
 <?php $result = []; ?>
+
 <div id="chart_div" style="width: 80%; height: 642px; float: left; overflow: auto;">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -13,7 +14,7 @@
         ['Category', 'Good', 'Bad'],
                 @if ($arr_bus[2] > 0)
         ['Bus', {{$arr_bus[0]}}, {{$arr_bus[1]}}],
-<?php array_push($result, "Bus," . $arr_bus[0] . "," . $arr_bus[1]);?>
+<?php array_push($result, "Bus," . $arr_bus[0] . "," . $arr_bus[1]); ?>
         @endif
                 @if ($arr_wifi[2] > 0)
         ['Wifi', {{$arr_wifi[0]}}, {{$arr_wifi[1]}}],
@@ -62,6 +63,7 @@
     </script>    
 </div>
 <p style="color: blue">Analysis sources : {{$fileName}}</p>
+
 <div style="width: 20%; height: 564px; border: 1px black solid; float: right; background-color: #343a40; overflow-y: auto;">
     <?php $i = 1; ?>
     <h3 align="center" style="color: white">Issue Ranking</h3>    
@@ -86,8 +88,8 @@
         @endforeach
     </table>        
 </div>
-<form action="{{ route('result.save') }}" method="post">
-    <?php $size = count($result);?>
+<form action="{{ route('result.save') }}" method="POST" enctype="multipart/form-data">
+    <?php $size = count($result); ?>
     @foreach($result as $key => $value)
     <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}" style="display: none"/>
     @endforeach
@@ -95,4 +97,6 @@
     <input type="submit" name="submit" value="Save to Database ?" style="position: absolute; right: 0; bottom: 0; width: 20%; height: 40px;">
     {{csrf_field()}}
 </form>
+<p><button class="w3-button w3-dark-grey" style="position: absolute; right: 0; bottom: -42px; width: 20%; height: 40px;" onclick="history.go(-1);">Back Homepage </button></p>
+
 @endsection

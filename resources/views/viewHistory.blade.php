@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div id="chart_div" style="width: 80%; height: 642px; float: left; overflow: auto;">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -77,6 +78,8 @@
         </tr>
         <?php $i += 1; ?>
         @endforeach
-    </table>        
+    </table>
+    <p><button style="position: absolute; right: 0; bottom: 0; width: 20%; height: 40px;" onclick="history.go(-1);">Back Homepage </button></p>
 </div>
+
 @endsection
