@@ -49,7 +49,7 @@ class dbController extends Controller {
             $records->save();
         }
         
-        $successMessage = "Record had save successfully in database.";
+        $successMessage = "The sentiment analysis result is successfully stored into database.";
         
         return view('home')->with('successMessage', $successMessage);
         
